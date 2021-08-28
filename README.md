@@ -1,14 +1,16 @@
 # spring-boot-demo-exlore
 
-## Build using Gradle
+## How-to
 
-- Takes about 1.5 minutes (tested on M1 Macbook Pro)
+### Option 1. Run server on host
+
+- Build using Gradle
 
   ```shell
   $ ./gradlew build
   ```
 
-## Option 1. Run server on host
+  - Takes about 1.5 minutes (tested on M1 Macbook Pro)
 
 - Run jar file
 
@@ -16,16 +18,16 @@
   $ java -jar build/libs/demo-0.0.1-SNAPSHOT.jar
   ```
 
-## Option 2. Using Docker container
+### Option 2. Run on Docker
 
 - Build the container
 
   ```shell
-  $ docker build --build-arg JAR_FILE=build/libs/\*.jar -t springio/gs-spring-boot-docker .
+  $ docker compose build
   ```
 
 - Run the container
 
   ```shell
-  $ docker run -p 8080:8080 -t springio/gs-spring-boot-docker
+  $ docker compose up
   ```
