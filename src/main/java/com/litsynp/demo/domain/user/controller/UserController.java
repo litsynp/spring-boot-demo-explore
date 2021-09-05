@@ -2,6 +2,7 @@ package com.litsynp.demo.domain.user.controller;
 
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import com.litsynp.demo.domain.user.dao.UserDaoService;
 import com.litsynp.demo.domain.user.exception.UserNotFoundException;
 import com.litsynp.demo.domain.user.model.User;
@@ -38,7 +39,7 @@ public class UserController {
   }
 
   @PostMapping("/users")
-  public ResponseEntity<Object> createUser(@RequestBody User user) {
+  public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
     User savedUser = userService.save(user);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
