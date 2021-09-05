@@ -7,6 +7,8 @@ import com.litsynp.demo.domain.user.dao.UserDaoService;
 import com.litsynp.demo.domain.user.exception.UserNotFoundException;
 import com.litsynp.demo.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;;
 
 @RestController
 public class UserController {
@@ -28,14 +33,21 @@ public class UserController {
   }
 
   @GetMapping("/users/{id}")
-  public User retrieveUser(@PathVariable int id) {
+  public EntityModel<User> retrieveUser(@PathVariable int id) {
     User user = userService.findOne(id);
 
     if (user == null) {
       throw new UserNotFoundException("id-" + id);
     }
 
-    return user;
+    // "all-users", SERVER_PATH + "/users"
+    EntityModel<User> resource = EntityModel.of(user);
+    WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+
+    // HATEOAS
+    resource.add(linkTo.withRel("all-users"));
+
+    return resource;
   }
 
   @PostMapping("/users")
