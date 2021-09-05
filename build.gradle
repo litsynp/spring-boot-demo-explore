@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-undertow'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
