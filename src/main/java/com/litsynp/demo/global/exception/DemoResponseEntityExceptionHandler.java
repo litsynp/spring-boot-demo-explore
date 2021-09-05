@@ -31,7 +31,7 @@ public class DemoResponseEntityExceptionHandler extends ResponseEntityExceptionH
     return new ResponseEntity<Object>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
 
-  @Override
+  // @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatus status, WebRequest request) {
     ExceptionResponse exceptionResponse =
