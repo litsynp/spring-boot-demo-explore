@@ -1,11 +1,11 @@
-package com.litsynp.demo.domain.user.controller;
+package com.litsynp.demo.domain.mockuser.controller;
 
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
-import com.litsynp.demo.domain.user.dao.UserDaoService;
-import com.litsynp.demo.domain.user.exception.UserNotFoundException;
-import com.litsynp.demo.domain.user.model.User;
+import com.litsynp.demo.domain.mockuser.dao.MockUserDaoService;
+import com.litsynp.demo.domain.mockuser.exception.MockUserNotFoundException;
+import com.litsynp.demo.domain.mockuser.model.MockUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -22,37 +22,37 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;;
 
 @RestController
-public class UserController {
+public class MockUserController {
 
   @Autowired
-  private UserDaoService userService;
+  private MockUserDaoService mockUserService;
 
-  @GetMapping("/users")
-  public List<User> retrieveAllUsers() {
-    return userService.findAll();
+  @GetMapping("/mock-users")
+  public List<MockUser> retrieveAllUsers() {
+    return mockUserService.findAll();
   }
 
-  @GetMapping("/users/{id}")
-  public EntityModel<User> retrieveUser(@PathVariable int id) {
-    User user = userService.findOne(id);
+  @GetMapping("/mock-users/{id}")
+  public EntityModel<MockUser> retrieveUser(@PathVariable int id) {
+    MockUser user = mockUserService.findOne(id);
 
     if (user == null) {
-      throw new UserNotFoundException("id-" + id);
+      throw new MockUserNotFoundException("id-" + id);
     }
 
     // "all-users", SERVER_PATH + "/users"
-    EntityModel<User> resource = EntityModel.of(user);
+    EntityModel<MockUser> resource = EntityModel.of(user);
     WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 
     // HATEOAS
-    resource.add(linkTo.withRel("all-users"));
+    resource.add(linkTo.withRel("mock-all-users"));
 
     return resource;
   }
 
-  @PostMapping("/users")
-  public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-    User savedUser = userService.save(user);
+  @PostMapping("/mock-users")
+  public ResponseEntity<Object> createUser(@Valid @RequestBody MockUser user) {
+    MockUser savedUser = mockUserService.save(user);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(savedUser.getId()).toUri();
@@ -60,12 +60,12 @@ public class UserController {
     return ResponseEntity.created(location).build();
   }
 
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/mock-users/{id}")
   public void deleteUser(@PathVariable int id) {
-    User user = userService.deleteById(id);
+    MockUser user = mockUserService.deleteById(id);
 
     if (user == null) {
-      throw new UserNotFoundException("id-" + id);
+      throw new MockUserNotFoundException("id-" + id);
     }
   }
 

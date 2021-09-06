@@ -2,7 +2,7 @@ package com.litsynp.demo.global.exception;
 
 import java.net.http.HttpHeaders;
 import java.util.Date;
-import com.litsynp.demo.domain.user.exception.UserNotFoundException;
+import com.litsynp.demo.domain.mockuser.exception.MockUserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,8 +23,8 @@ public class DemoResponseEntityExceptionHandler extends ResponseEntityExceptionH
     return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(UserNotFoundException.class)
-  public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex,
+  @ExceptionHandler(MockUserNotFoundException.class)
+  public final ResponseEntity<Object> handleMockUserNotFoundException(MockUserNotFoundException ex,
       WebRequest request) {
     ExceptionResponse exceptionResponse =
         new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));

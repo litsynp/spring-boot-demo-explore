@@ -1,12 +1,12 @@
-package com.litsynp.demo.domain.user.exception;
+package com.litsynp.demo.domain.mockuser.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
+public class MockUserNotFoundException extends RuntimeException {
 
-  public UserNotFoundException(String message) {
+  public MockUserNotFoundException(String message) {
     super(message);
   }
 
