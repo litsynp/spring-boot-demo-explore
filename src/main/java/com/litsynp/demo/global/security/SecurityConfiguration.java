@@ -16,6 +16,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests().antMatchers("/h2-console/*").permitAll();// H2 URI에 대한 권한 허가
 
     // CSRF Token 비활성화
-    http.csrf().disable();
+    http.authorizeRequests().antMatchers("/").permitAll().and().csrf().disable();
   }
 }
