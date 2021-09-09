@@ -20,16 +20,16 @@ public class UserRepositoryCommandLineRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
+    // Disabled to run `data.sql`
+    // User user = new User("Jack", "Admin");
+    // userRepository.save(user);
+    // log.info("New user is created : " + user);
 
-    User user = new User("Jack", "Admin");
-    userRepository.save(user);
-    log.info("New user is created : " + user);
+    // Optional<User> userWithIdOne = userRepository.findById(1L);
+    // log.info("User is retrieved : " + userWithIdOne);
 
-    Optional<User> userWithIdOne = userRepository.findById(1L);
-    log.info("User is retrieved : " + userWithIdOne);
-
-    List<User> users = userRepository.findAll();
-    log.info("All users :" + users);
+    // List<User> users = userRepository.findAll();
+    // log.info("All users :" + users);
 
   }
 }
