@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+import com.litsynp.demo.domain.post.domain.Post;
+import com.litsynp.demo.domain.post.repository.PostRepository;
 import com.litsynp.demo.domain.user.domain.User;
 import com.litsynp.demo.domain.user.exception.UserNotFoundException;
 import com.litsynp.demo.domain.user.repository.UserRepository;
@@ -28,6 +30,9 @@ public class UserController {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private PostRepository postRepository;
+
   @GetMapping("/jpa/users")
   public List<User> retrieveAllUsers() {
     return userRepository.findAll();
@@ -35,14 +40,14 @@ public class UserController {
 
   @GetMapping("/jpa/users/{id}")
   public EntityModel<User> retrieveUser(@PathVariable int id) {
-    Optional<User> user = userRepository.findById(id);
+    Optional<User> userOptional = userRepository.findById(id);
 
-    if (!user.isPresent()) {
+    if (!userOptional.isPresent()) {
       throw new UserNotFoundException("id-" + id);
     }
 
     // "all-users", SERVER_PATH + "/jpa/users"
-    EntityModel<User> resource = EntityModel.of(user.get());
+    EntityModel<User> resource = EntityModel.of(userOptional.get());
     WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 
     // HATEOAS
@@ -64,6 +69,37 @@ public class UserController {
   @DeleteMapping("/jpa/users/{id}")
   public void deleteUser(@PathVariable int id) {
     userRepository.deleteById(id);
+  }
+
+  @GetMapping("/jpa/users/{id}/posts")
+  public List<Post> retrieveAllPostsFromUser(@PathVariable int id) {
+    Optional<User> userOptional = userRepository.findById(id);
+
+    if (!userOptional.isPresent()) {
+      throw new UserNotFoundException("id-" + id);
+    }
+
+    return userOptional.get().getPosts();
+  }
+
+  @PostMapping("/jpa/users/{id}/posts")
+  public ResponseEntity<Object> createPostForUser(@PathVariable int id, @RequestBody Post post) {
+    Optional<User> userOptional = userRepository.findById(id);
+
+    if (!userOptional.isPresent()) {
+      throw new UserNotFoundException("id-" + id);
+    }
+
+    User user = userOptional.get();
+
+    post.setUser(user);
+    postRepository.save(post);
+    Post savedPost = postRepository.save(post);
+
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+        .buildAndExpand(savedPost.getId()).toUri();
+
+    return ResponseEntity.created(location).build();
   }
 
 }

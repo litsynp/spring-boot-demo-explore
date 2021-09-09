@@ -63,6 +63,14 @@ public class User {
     this.birthDate = birthDate;
   }
 
+  public List<Post> getPosts() {
+    return this.posts;
+  }
+
+  public void setPosts(List<Post> posts) {
+    this.posts = posts;
+  }
+
   @Override
   public String toString() {
     return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'" + ", birthDate='"
