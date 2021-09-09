@@ -1,11 +1,14 @@
 package com.litsynp.demo.domain.user.domain;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import com.litsynp.demo.domain.post.domain.Post;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,6 +27,9 @@ public class User {
   @Past
   @ApiModelProperty(notes = "Birth date should be in the past")
   private Date birthDate;
+
+  @OneToMany(mappedBy = "user")
+  private List<Post> posts;
 
   public User() {}
 
@@ -55,21 +61,6 @@ public class User {
 
   public void setBirthDate(Date birthDate) {
     this.birthDate = birthDate;
-  }
-
-  public User id(Integer id) {
-    setId(id);
-    return this;
-  }
-
-  public User name(String name) {
-    setName(name);
-    return this;
-  }
-
-  public User birthDate(Date birthDate) {
-    setBirthDate(birthDate);
-    return this;
   }
 
   @Override
